@@ -14,9 +14,6 @@ public class RedisService {
     @Autowired
     JedisPool jedisPool;
 
-    @Autowired
-    RedisConfig redisConfig;
-
     public <T> T get(String key, Class<T>clazz) {
         Jedis jedis = null;
         try {
