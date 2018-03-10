@@ -2,6 +2,7 @@ package com.uestc.controller;
 
 import com.uestc.domain.User;
 import com.uestc.redis.RedisService;
+import com.uestc.redis.UserKey;
 import com.uestc.result.CodeMsg;
 import com.uestc.result.Result;
 import com.uestc.service.UserService;
@@ -48,8 +49,18 @@ public class SampleController {
 
     @RequestMapping("/redis/get")
     @ResponseBody
-    public Result<String> redisGet() {
-        String v1 = redisService.get("key1", String.class);
-        return Result.success(v1);
+    public Result<User> redisGet() {
+        User user = redisService.get(UserKey.getById,"1", User.class);
+        return Result.success(user);
+    }
+
+    @RequestMapping("/redis/set")
+    @ResponseBody
+    public Result<Boolean> redisSet() {
+        User user = new User();
+        user.setId(1);
+        user.setName("user1");
+        boolean flag = redisService.set(UserKey.getById, "1", user);
+        return Result.success(flag);
     }
 }
