@@ -11,6 +11,10 @@ public class RedisPoolFactory {
     @Autowired
     RedisConfig redisConfig;
 
+    /**
+     * 连接池工厂，基于RedisConfig里面的配置信息，创建连接池，添加Bean注解，放入Spring Boot容器中
+     * @return
+     */
     @Bean
     public JedisPool jedisPoolFactory() {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
