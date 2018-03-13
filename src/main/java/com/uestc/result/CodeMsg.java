@@ -6,7 +6,7 @@ public class CodeMsg {
 
     private String msg;
 
-//    public static final CodeMsg SUCCESS = new CodeMsg(0, "success");
+    public static final CodeMsg SUCCESS = new CodeMsg(0, "success");
 
     //通用异常
     public static final CodeMsg SERVER_ERROR = new CodeMsg(500100, "服务端异常");

@@ -45,7 +45,7 @@ public class MD5Util {
 
     public static void main(String[] args) {
         System.out.println(inputPassToFormPass("123456"));
-//        System.out.println(formPassToDBPass(inputPassToFormPass("123456"), SALT));
-//        System.out.println(inputPassToDBPass("123456", SALT));
+        System.out.println(formPassToDBPass(inputPassToFormPass("123456"), SALT));
+        System.out.println(inputPassToDBPass("123456", SALT));
     }
 }
