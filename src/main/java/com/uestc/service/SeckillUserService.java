@@ -2,6 +2,7 @@ package com.uestc.service;
 
 import com.uestc.dao.SeckillUserDao;
 import com.uestc.domain.SeckillUser;
+import com.uestc.exception.GlobleException;
 import com.uestc.result.CodeMsg;
 import com.uestc.util.MD5Util;
 import com.uestc.vo.LoginVo;
@@ -18,16 +19,16 @@ public class SeckillUserService {
         return seckillUserDao.getById(id);
     }
 
-    public CodeMsg login(LoginVo loginVo) {
+    public boolean login(LoginVo loginVo) {
         if (loginVo == null) {
-            return CodeMsg.SERVER_ERROR;
+            throw new GlobleException(CodeMsg.SERVER_ERROR);
         }
         String mobile = loginVo.getMobile();
         String formpass = loginVo.getPassword();
         //判断手机号是否存在
         SeckillUser seckillUser = getById(Long.parseLong(mobile));
         if (seckillUser == null) {
-            return CodeMsg.MOBILE_NOT_EXIST;
+            throw new GlobleException(CodeMsg.MOBILE_NOT_EXIST);
         }
 
         //验证密码
@@ -35,8 +36,8 @@ public class SeckillUserService {
         String dbSalt = seckillUser.getSalt();
         String calcPass = MD5Util.formPassToDBPass(formpass, dbSalt);
         if (!calcPass.equals(dbPass)) {
-            return CodeMsg.PASSWORD_ERROR;
+            throw new GlobleException(CodeMsg.PASSWORD_ERROR);
         }
-        return CodeMsg.SUCCESS;
+        return true;
     }
 }

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/login")
 public class LoginController {
@@ -27,14 +29,10 @@ public class LoginController {
 
     @RequestMapping("/do_login")
     @ResponseBody
-    public Result<Boolean> doLogin(LoginVo loginVo) {
+    public Result<Boolean> doLogin(@Valid LoginVo loginVo) {
         logger.info(loginVo.toString());
         //登录
-        CodeMsg codeMsg = seckillUserService.login(loginVo);
-        if (codeMsg.getCode() == 0) {
-            return Result.success(true);
-        } else {
-            return Result.error(codeMsg);
-        }
+        seckillUserService.login(loginVo);
+        return Result.success(true);
     }
 }
