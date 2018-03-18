@@ -28,7 +28,11 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     @Override
-    public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
+    public Object resolveArgument(MethodParameter methodParameter,
+                                  ModelAndViewContainer modelAndViewContainer,
+                                  NativeWebRequest nativeWebRequest,
+                                  WebDataBinderFactory webDataBinderFactory) throws Exception {
+
         HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
         HttpServletResponse response = nativeWebRequest.getNativeResponse(HttpServletResponse.class);
 
