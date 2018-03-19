@@ -2,6 +2,7 @@ package com.uestc.service;
 
 import com.uestc.dao.GoodsDao;
 import com.uestc.domain.Goods;
+import com.uestc.domain.SecKillGoods;
 import com.uestc.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,5 +25,11 @@ public class GoodsService {
 
     public GoodsVo getGoodsVoByGoodsId(long goodsId) {
         return goodsDao.getGoodsVoByGoodsId(goodsId);
+    }
+
+    public void reduceStock(GoodsVo goodsVo) {
+        SecKillGoods secKillGoods = new SecKillGoods();
+        secKillGoods.setGoodId(goodsVo.getId());
+        goodsDao.reduceStock(secKillGoods);
     }
 }

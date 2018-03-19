@@ -1,10 +1,12 @@
 package com.uestc.dao;
 
 import com.uestc.domain.Goods;
+import com.uestc.domain.SecKillGoods;
 import com.uestc.vo.GoodsVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -26,4 +28,7 @@ public interface GoodsDao {
             "ON sg.good_id = g.id " +
             "WHERE sg.good_id = #{goodsId}")
     GoodsVo getGoodsVoByGoodsId(@Param("goodsId")long goodsId);
+
+    @Update("UPDATE seckill_goods SET stock_count = stock_count - 1 WHERE good_id = #{goodId}")
+    void reduceStock(SecKillGoods secKillGoods);
 }
