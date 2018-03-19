@@ -1,6 +1,5 @@
 package com.uestc.controller;
 
-import com.uestc.result.CodeMsg;
 import com.uestc.result.Result;
 import com.uestc.service.SeckillUserService;
 import com.uestc.vo.LoginVo;
