@@ -19,16 +19,16 @@ public interface GoodsDao {
     @Select("SELECT g.*, sg.seckill_price, sg.stock_count, sg.start_date, sg.end_date " +
             "FROM seckill_goods sg " +
             "LEFT JOIN goods g " +
-            "ON sg.good_id = g.id")
+            "ON sg.goods_id = g.id")
     List<GoodsVo> listGoodsVo();
 
     @Select("SELECT g.*, sg.seckill_price, sg.stock_count, sg.start_date, sg.end_date " +
             "FROM seckill_goods sg " +
             "LEFT JOIN goods g " +
-            "ON sg.good_id = g.id " +
-            "WHERE sg.good_id = #{goodsId}")
+            "ON sg.goods_id = g.id " +
+            "WHERE sg.goods_id = #{goodsId}")
     GoodsVo getGoodsVoByGoodsId(@Param("goodsId")long goodsId);
 
-    @Update("UPDATE seckill_goods SET stock_count = stock_count - 1 WHERE good_id = #{goodId}")
+    @Update("UPDATE seckill_goods SET stock_count = stock_count - 1 WHERE goods_id = #{goodsId}")
     void reduceStock(SecKillGoods secKillGoods);
 }

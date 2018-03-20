@@ -29,7 +29,7 @@ public class GoodsService {
 
     public void reduceStock(GoodsVo goodsVo) {
         SecKillGoods secKillGoods = new SecKillGoods();
-        secKillGoods.setGoodId(goodsVo.getId());
+        secKillGoods.setGoodsId(goodsVo.getId());
         goodsDao.reduceStock(secKillGoods);
     }
 }

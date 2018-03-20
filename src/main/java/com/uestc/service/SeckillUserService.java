@@ -47,7 +47,7 @@ public class SeckillUserService {
         return seckillUser;
     }
 
-    public boolean login(HttpServletResponse response, LoginVo loginVo) {
+    public String login(HttpServletResponse response, LoginVo loginVo) {
         if (loginVo == null) {
             throw new GlobleException(CodeMsg.SERVER_ERROR);
         }
@@ -70,7 +70,7 @@ public class SeckillUserService {
 
         String token = UUIDUtil.uuid();
         addCookie(response, token, seckillUser);
-        return true;
+        return token;
     }
 
     /**

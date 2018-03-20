@@ -5,7 +5,7 @@ import java.util.Date;
 public class SecKillGoods {
 
 	private Long id;
-	private Long goodId;
+	private Long goodsId;
 	private Double seckillPrice;
 	private Integer stockCount;
 	private Date startDate;
@@ -18,12 +18,12 @@ public class SecKillGoods {
 		this.id = id;
 	}
 
-	public Long getGoodId() {
-		return goodId;
+	public Long getGoodsId() {
+		return goodsId;
 	}
 
-	public void setGoodId(Long goodId) {
-		this.goodId = goodId;
+	public void setGoodsId(Long goodsId) {
+		this.goodsId = goodsId;
 	}
 
 	public Double getSeckillPrice() {
