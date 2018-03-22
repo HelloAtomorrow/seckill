@@ -2,18 +2,21 @@ package com.uestc.controller;
 
 import com.uestc.domain.Goods;
 import com.uestc.domain.SeckillUser;
+import com.uestc.redis.GoodsKey;
+import com.uestc.redis.RedisService;
 import com.uestc.service.GoodsService;
 import com.uestc.service.SeckillUserService;
 import com.uestc.vo.GoodsVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.spring4.context.SpringWebContext;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -27,12 +30,40 @@ public class GoodsController {
     @Autowired
     GoodsService goodsService;
 
-    @RequestMapping("/to_list")
-    public String toList(Model model, SeckillUser seckillUser) {
+    @Autowired
+    RedisService redisService;
+
+    @Autowired
+    ThymeleafViewResolver thymeleafViewResolver;
+
+    @Autowired
+    ApplicationContext applicationContext;
+
+    @RequestMapping(value="/to_list", produces="text/html")
+    @ResponseBody
+    public String toList(HttpServletRequest httpServletRequest,
+                         HttpServletResponse httpServletResponse,
+                         Model model,
+                         SeckillUser seckillUser) {
+//        //先从缓存中取
+        String html = redisService.get(GoodsKey.goodslistKey, "", String.class);
+        if (!StringUtils.isEmpty(html)) {
+            return html;
+        }
+
+        //手动渲染
         model.addAttribute("user", seckillUser);
-        List<GoodsVo> goodsVos = goodsService.listGoodsVo();
-        model.addAttribute("goodsList", goodsVos);
-        return "goods_list";
+        List<GoodsVo> goodsList = goodsService.listGoodsVo();
+        model.addAttribute("goodsList", goodsList);
+        SpringWebContext springWebContext = new SpringWebContext(httpServletRequest,
+                httpServletResponse, httpServletRequest.getServletContext(),
+                httpServletRequest.getLocale(), model.asMap(), applicationContext);
+        html = thymeleafViewResolver.getTemplateEngine().process("goods_list", springWebContext);
+        //添加到缓存
+        if (!StringUtils.isEmpty(html)) {
+            redisService.set(GoodsKey.goodslistKey, "", html);
+        }
+        return html;
     }
 
     /**

@@ -27,7 +27,20 @@ public class SeckillUserService {
     RedisService redisService;
 
     public SeckillUser getById(Long id) {
-        return seckillUserDao.getById(id);
+        SeckillUser seckillUser = redisService.get(SeckillUserKey.getById, ""+id, SeckillUser.class);
+        if (seckillUser != null) {
+            return seckillUser;
+        }
+        seckillUser = seckillUserDao.getById(id);
+        if (seckillUser != null) {
+            redisService.set(SeckillUserKey.getById, ""+id, seckillUser);
+        }
+        return seckillUser;
+    }
+
+    ///////等后续完善，更改密码的服务。这里要注意，更新之后，需要修改缓存。
+    public boolean updatePassword(long id, String newPassword) {
+        return false;
     }
 
     /**

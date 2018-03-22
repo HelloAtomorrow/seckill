@@ -162,7 +162,7 @@ public class RedisService {
         } else if (clazz == String.class) {
             return (T) string;
         } else {
-        return JSON.toJavaObject(JSON.parseObject(string), clazz);
+            return JSON.toJavaObject(JSON.parseObject(string), clazz);
         }
     }
 
