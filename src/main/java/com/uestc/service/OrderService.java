@@ -4,6 +4,8 @@ import com.uestc.dao.OrderDao;
 import com.uestc.domain.OrderInfo;
 import com.uestc.domain.SeckillOrder;
 import com.uestc.domain.SeckillUser;
+import com.uestc.redis.OrderKey;
+import com.uestc.redis.RedisService;
 import com.uestc.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,14 @@ public class OrderService {
     @Autowired
     OrderDao orderDao;
 
+    @Autowired
+    RedisService redisService;
+
     public SeckillOrder getSeckillOrderByUserIdGoodsId(long userId, long goodsId) {
+        SeckillOrder seckillOrder = redisService.get(OrderKey.getSeckillOrderByUidGid, userId + "_" + goodsId, SeckillOrder.class);
+        if (seckillOrder != null) {
+            return seckillOrder;
+        }
         return orderDao.getSeckillOrderByUserIdGoodsId(userId, goodsId);
     }
 
@@ -40,6 +49,8 @@ public class OrderService {
         seckillOrder.setOrderId(orderId);
         seckillOrder.setUserId(seckillUser.getId());
         orderDao.insertSeckillOrder(seckillOrder);
+
+        redisService.set(OrderKey.getSeckillOrderByUidGid, seckillUser.getId() + "_" + goodsVo.getId(), seckillOrder);
 
         return orderInfo;
     }
