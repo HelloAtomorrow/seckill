@@ -4,8 +4,10 @@ import com.uestc.domain.Goods;
 import com.uestc.domain.SeckillUser;
 import com.uestc.redis.GoodsKey;
 import com.uestc.redis.RedisService;
+import com.uestc.result.Result;
 import com.uestc.service.GoodsService;
 import com.uestc.service.SeckillUserService;
+import com.uestc.vo.GoodsDetailVo;
 import com.uestc.vo.GoodsVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,13 +75,12 @@ public class GoodsController {
      * @param goodsId 实际生产中很少使用goodsId这种自增的id，容易被别人遍历。业内常用snowflake
      * @return
      */
-    @RequestMapping("/to_detail/{goodsId}")
-    public String toDetail(Model model, SeckillUser seckillUser,
-                           @PathVariable("goodsId")long goodsId) {
-        model.addAttribute("user", seckillUser);
-        GoodsVo goodsVo = goodsService.getGoodsVoByGoodsId(goodsId);
-        model.addAttribute("goods", goodsVo);
+    @RequestMapping("/detail/{goodsId}")
+    @ResponseBody
+    public Result<GoodsDetailVo> toDetail(Model model, SeckillUser seckillUser,
+                                          @PathVariable("goodsId")long goodsId) {
 
+        GoodsVo goodsVo = goodsService.getGoodsVoByGoodsId(goodsId);
         long startTime = goodsVo.getStartDate().getTime();
         long endTime = goodsVo.getEndDate().getTime();
         long nowTime = System.currentTimeMillis();
@@ -96,8 +97,12 @@ public class GoodsController {
             seckillStatu = 1;
             remainSeconds = 0;
         }
-        model.addAttribute("seckillStatu", seckillStatu);
-        model.addAttribute("remainSeconds", remainSeconds);
-        return "goods_detail";
+
+        GoodsDetailVo goodsDetailVo = new GoodsDetailVo();
+        goodsDetailVo.setGoodsVo(goodsVo);
+        goodsDetailVo.setSeckillUser(seckillUser);
+        goodsDetailVo.setRemainSeconds(remainSeconds);
+        goodsDetailVo.setSeckillStatu(seckillStatu);
+        return Result.success(goodsDetailVo);
     }
 }
