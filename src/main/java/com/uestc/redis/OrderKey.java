@@ -6,5 +6,5 @@ public class OrderKey extends BasePrefix {
         super(expireSeconds, prefix);
     }
 
-    public static OrderKey getSeckillOrderByUidGid = new OrderKey(600, "soud");
+    public static OrderKey getSeckillOrderByUidGid = new OrderKey(10, "soud");
 }
