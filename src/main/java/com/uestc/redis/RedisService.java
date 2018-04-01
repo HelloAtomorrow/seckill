@@ -128,7 +128,7 @@ public class RedisService {
      * @param <T>
      * @return
      */
-    private <T> String beanToString(T value) {
+    public <T> String beanToString(T value) {
         if (value == null) {
             return null;
         }
@@ -151,7 +151,7 @@ public class RedisService {
      * @param <T>
      * @return
      */
-    private <T> T stringToBean(String string, Class<T> clazz) {
+    public <T> T stringToBean(String string, Class<T> clazz) {
         if (string == null || string.length() <= 0 || clazz == null) {
             return null;
         }

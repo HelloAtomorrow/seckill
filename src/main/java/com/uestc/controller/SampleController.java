@@ -1,6 +1,7 @@
 package com.uestc.controller;
 
 import com.uestc.domain.User;
+import com.uestc.rabbitmq.MQSender;
 import com.uestc.redis.RedisService;
 import com.uestc.redis.UserKey;
 import com.uestc.result.CodeMsg;
@@ -21,6 +22,9 @@ public class SampleController {
 
     @Autowired
     RedisService redisService;
+
+    @Autowired
+    MQSender sender;
 
     @RequestMapping("/thymeleaf")
     public String thymeleaf(Model model) {
@@ -63,4 +67,11 @@ public class SampleController {
         boolean flag = redisService.set(UserKey.getById, "1", user);
         return Result.success(flag);
     }
+
+//    @RequestMapping("/mq")
+//    @ResponseBody
+//    public Result<String> mq() {
+//        sender.sendHeader("hello mq");
+//        return Result.success("success");
+//    }
 }
